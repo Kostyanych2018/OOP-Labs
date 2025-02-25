@@ -1,6 +1,6 @@
-namespace Lab1.Entities;
+namespace Lab1.Entities.Users;
 
-public class Manager
+public class Manager : AbstractUser
 {
-    
+    public override string Role => "Manager";
 }

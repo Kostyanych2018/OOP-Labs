@@ -1,6 +1,6 @@
-namespace Lab1.Entities;
+namespace Lab1.Entities.Users;
 
-public class Operator
+public class Operator : AbstractUser
 {
-    
+  public override string Role => "Operator";
 }
