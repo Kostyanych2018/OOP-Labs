@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BankingApp.UI.Views.DashboardPages.ClientPages.ClientAccountsPage"
+             xmlns:viewmodel="clr-namespace:BankingApp.UI.ViewModels.RoleBasedModels"
+             xmlns:views="clr-namespace:BankingApp.UI.Views.DashboardPages.ClientPages"
+             xmlns:banking="clr-namespace:BankingApp.Entities.Banking"
+             xmlns:customers="clr-namespace:BankingApp.Entities.Customers"
+             x:DataType="viewmodel:ClientAccountsViewModel">
+    <VerticalStackLayout Spacing="10" Padding="10">
+        <views:SharedHeader></views:SharedHeader>
+        <Border Stroke="Black"
+                StrokeShape="RoundRectangle 10"
+                Margin="0,5,0,0"
+                Padding="10">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Выберите банк" FontSize="18" FontAttributes="Bold"/>
+                    
+                    <CollectionView ItemsSource="{Binding AvailableBanks}"
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedBank}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="customers:Bank">
+                                <Border StrokeShape="RoundRectangle 10"
+                                        Padding="10">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding LegalName}" FontSize="16" FontAttributes="Bold"/>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+        </Border>
+        
+        <Border IsVisible="{Binding SelectedBank,Converter={StaticResource NotNullConverter}}"
+                Stroke="Black" StrokeShape="RoundRectangle 10"
+                Padding="10">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Выбранный банк:" FontAttributes="Bold" FontSize="16" />
+                <Label> 
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Название банка: " FontSize="14"/>
+                            <Span Text="{Binding SelectedBank.LegalName}" 
+                                  FontAttributes="Bold" FontSize="16"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Text="{Binding SelectedBank.LegalAddress, StringFormat='Адрес банка: {0}'}" FontSize="14" />
+                <Label Text="{Binding SelectedBank.BankIdCode, StringFormat='БИК: {0}'}" FontSize="14" />
+            </VerticalStackLayout>
+        </Border>
+        
+        <Border IsVisible="{Binding SelectedBank,Converter={StaticResource NotNullConverter}}"
+                Stroke="Black" StrokeShape="RoundRectangle 10"
+                Padding="10">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Мои счета" FontSize="16" FontAttributes="Bold"/>
+                <Button Text="Открыть счет" BorderColor="Black" BorderWidth="1"
+                        Command="{Binding OpenAccountCommand}"
+                        BackgroundColor="Blue"
+                        CornerRadius="5"
+                        TextColor="White"/>
+                    <CollectionView ItemsSource="{Binding Accounts}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedAccount}"
+                        EmptyView="У вас пока нет счетов. Нажмите 'Открыть счет', чтобы создать новый счет" >
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="banking:Account">
+                                <Border Stroke="Black"
+                                        StrokeShape="RoundRectangle 10"
+                                        Margin="0,5,0,0"
+                                        Padding="10">
+                                    <Grid ColumnDefinitions="auto,*,auto" RowDefinitions="auto,auto,auto,auto">
+                                        <Label Grid.Column="0" Grid.Row="0"
+                                               Text="{Binding Type,Converter={StaticResource AccountTypeConverter}}"
+                                               FontSize="16"/>
+                                        <Label Grid.Column="2" Grid.Row="0"
+                                               Text="{Binding Status,Converter={StaticResource AccountStatusConverter}}"
+                                               FontSize="14" TextColor="{Binding Status, Converter={StaticResource  AccountStatusToColorConverter}}"/>
+                                        
+                                        <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1"
+                                               Text="{Binding AccountNumber, StringFormat='Счет №{0}'}"
+                                               FontSize="14" />
+                                        <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2"
+                                               Text="{Binding Balance, StringFormat='Баланс: {0:C}'}"
+                                               FontSize="14" Margin="0,5,0,0" />
+                                        <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3"
+                                               Text="{Binding OpenDate, StringFormat='Дата открытия: {0}'}"
+                                               FontSize="14"/>
+                                        
+                                        <StackLayout Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
+                                            <Button Text="Операции" BackgroundColor="Blue"
+                                                    Clicked="OnAccountOperationsClicked"
+                                                    HeightRequest="30" WidthRequest="100" Margin="5,0,5,0" Padding="5,0"
+                                                    />
+                                        </StackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+            </VerticalStackLayout>
+        </Border>
+        
+    </VerticalStackLayout>
+</ContentPage>

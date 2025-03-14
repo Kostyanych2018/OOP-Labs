@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:BankingApp.UI.ViewModels"
+             xmlns:dtos="clr-namespace:BankingApp.DTOs"
+             x:Class="BankingApp.UI.Views.RequestsPage"
+             x:DataType="viewmodel:AdminPanelViewModel">
+    
+
+    <Grid RowDefinitions="auto,*" Padding="10">
+        <Label Text="Заявки на регистрацию"
+               Grid.Row="0"
+               FontSize="22"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               Margin="0,10,0,10" />
+        <Grid Grid.Row="1" RowDefinitions="*,auto">
+            <!-- Список заявок -->
+            <CollectionView Grid.Row="0"
+                            ItemsSource="{Binding PendingRequests}"
+                            SelectedItem="{Binding SelectedRequest}"
+                            SelectionMode="Single"
+                            Margin="0,0,0,10">
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="Нет ожидающих заявок"
+                               FontSize="18"
+                               TextColor="Gray"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dtos:RegistrationRequest">
+                        <Border Stroke="LightGray"
+                                StrokeShape="RoundRectangle 10"
+                                Margin="0,5,0,10"
+                                Padding="15">
+                            <Grid ColumnDefinitions="auto,auto,auto">
+                                <VerticalStackLayout Grid.Column="0" Spacing="5">
+                                    <Label Text="{Binding Username, StringFormat='Пользователь: {0}'}"
+                                           FontAttributes="Bold" />
+                                    <!-- <Label Text="{Binding Email, StringFormat='Email: {0}'}"/> -->
+
+                                    <VerticalStackLayout
+                                        IsVisible="{Binding CustomerType,
+                                Converter={StaticResource CustomerTypeToVisibilityConverter},
+                                ConverterParameter={x:Static dtos:CustomerType.PhysicalPerson}}">
+                                        <Label Text="{Binding CustomerType, StringFormat='Тип клиента: {0}'}" />
+                                        <Label Text="{Binding FullName, StringFormat='ФИО: {0}'}" />
+                                        <Label Text="{Binding PassportSeries, StringFormat='Серия паспорта: {0}'}" />
+                                        <Label Text="{Binding PassportNumber, StringFormat='Номер паспорта: {0}'}" />
+                                        <Label Text="{Binding PhoneNumber, StringFormat='Телефон: {0}'}" />
+                                        <Label Text="{Binding Email, StringFormat='Email: {0}'}" />
+                                    </VerticalStackLayout>
+
+                                    <VerticalStackLayout
+                                        IsVisible="{Binding CustomerType,
+                                Converter={StaticResource CustomerTypeToVisibilityConverter},
+                                ConverterParameter={x:Static dtos:CustomerType.Bank}}">
+                                        <Label Text="{Binding CustomerType, StringFormat='Тип клиента: {0}'}" />
+                                        <Label Text="{Binding LegalName, StringFormat='Название банка: {0}'}" />
+                                        <Label Text="{Binding LegalAddress, StringFormat='Адрес банка: {0}'}" />
+                                        <Label Text="{Binding TaxIdNumber, StringFormat='УНП банка: {0}'}" />
+                                        <Label Text="{Binding LegalEntityType, StringFormat='Тип юр. лица: {0}'}" />
+                                        <Label Text="{Binding BankIdCode, StringFormat='БИК банка: {0}'}" />
+                                        <Label Text="{Binding Email, StringFormat='Email: {0}'}" />
+                                    </VerticalStackLayout>
+
+                                    <VerticalStackLayout
+                                        IsVisible="{Binding CustomerType,
+                                Converter={StaticResource CustomerTypeToVisibilityConverter},
+                                ConverterParameter={x:Static dtos:CustomerType.Enterprise}}">
+                                        <Label Text="{Binding CustomerType, StringFormat='Тип клиента: {0}'}" />
+                                        <Label Text="{Binding LegalName, StringFormat='Название предприятия: {0}'}" />
+                                        <Label Text="{Binding LegalAddress, StringFormat='Адрес предприятия: {0}'}" />
+                                        <Label Text="{Binding TaxIdNumber, StringFormat='УНП предприятия: {0}'}" />
+                                        <Label Text="{Binding LegalEntityType, StringFormat='Тип юр. лица: {0}'}" />
+                                        <Label Text="{Binding IndustryType, StringFormat='Отрасль предприятия: {0}'}" />
+                                        <Label Text="{Binding Email, StringFormat='Email: {0}'}" />
+                                    </VerticalStackLayout>
+                                    <Label Text="{Binding Status}"
+                                           TextColor="{Binding Status,
+                                       Converter={StaticResource RegistrationStatusToColorConverter}}"
+                                           FontAttributes="Bold" />
+                                </VerticalStackLayout>
+
+                                <Button Grid.Column="1"
+                                        Text="✓"
+                                        FontSize="18"
+                                        BackgroundColor="Green"
+                                        TextColor="White"
+                                        WidthRequest="50"
+                                        HeightRequest="50"
+                                        Margin="50,0"
+                                        Command="{Binding Source={RelativeSource
+                                    AncestorType={x:Type viewmodel:AdminPanelViewModel}},
+                                    Path=ApproveCommand}"
+                                        CommandParameter="{Binding .}"
+                                        IsVisible="{Binding Status,
+                                    Converter={StaticResource StatusToVisibilityConverter},
+                                    ConverterParameter={x:Static dtos:RegistrationStatus.Pending}}" />
+
+                                <Button Grid.Column="2"
+                                        Text="✕"
+                                        FontSize="18"
+                                        BackgroundColor="Red"
+                                        TextColor="White"
+                                        WidthRequest="50"
+                                        HeightRequest="50"
+                                        Margin="50,0"
+                                        Command="{Binding Source={RelativeSource
+                                    AncestorType={x:Type viewmodel:AdminPanelViewModel}},
+                                    Path=RejectCommand}"
+                                        CommandParameter="{Binding .}"
+                                        IsVisible="{Binding Status,
+                                    Converter={StaticResource StatusToVisibilityConverter},
+                                    ConverterParameter={x:Static dtos:RegistrationStatus.Pending}}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button
+                Grid.Row="1"
+                Text="Обновить список"
+                Command="{Binding RefreshCommand}"
+                Margin="0,10,0,0"
+                HorizontalOptions="Center"
+                BackgroundColor="Blue"
+                CornerRadius="5"
+                WidthRequest="150"
+                HeightRequest="40" />
+        </Grid>
+    </Grid>
+</ContentPage>

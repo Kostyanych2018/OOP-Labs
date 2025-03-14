@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Shell
+    x:Class="BankingApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:lab1="clr-namespace:BankingApp"
+    xmlns:views="clr-namespace:BankingApp.UI.Views"
+    xmlns:clientpages="clr-namespace:BankingApp.UI.Views.DashboardPages.ClientPages"
+    xmlns:servicePages="clr-namespace:BankingApp.UI.Views.ServicePages"
+    Shell.FlyoutBehavior="Flyout"
+    Title="BankingApp">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style TargetType="ShellContent">
+                <Setter Property="Shell.NavBarHasShadow" Value="False" />
+                <Setter Property="Shell.NavBarIsVisible" Value="False" />
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+
+    <FlyoutItem Title="Home">
+        <ShellContent
+            ContentTemplate="{DataTemplate lab1:MainPage}"
+            Route="MainPage" />
+    </FlyoutItem>
+    <FlyoutItem Title="Registration" x:Name="RegistrationPage">
+        <ShellContent
+            ContentTemplate="{DataTemplate servicePages:RegistrationPage}"
+            Route="RegistrationPage" />
+    </FlyoutItem>
+    <FlyoutItem Title="Admin">
+        <Tab Title="Пользователи системы">
+            <ShellContent ContentTemplate="{DataTemplate views:UsersPage}"></ShellContent>
+        </Tab>
+        <Tab Title="Заявки на регистрацию">
+            <ShellContent ContentTemplate="{DataTemplate views:RequestsPage}"></ShellContent>
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem Title="LoginPage">
+        <ShellContent
+            ContentTemplate="{DataTemplate servicePages:LoginPage}"
+            Route="LoginPage"/>
+    </FlyoutItem>
+            
+    <TabBar Route="Client">
+        <Tab Title="Профиль" Route="Profile">
+            <ShellContent
+                ContentTemplate="{DataTemplate clientpages:ClientProfilePage}"
+                />
+            
+        </Tab>
+        <Tab Title="Счета" Route="Accounts">
+            <ShellContent
+                ContentTemplate="{DataTemplate clientpages:ClientAccountsPage}"
+                />
+        </Tab>
+    </TabBar>
+    
+</Shell>

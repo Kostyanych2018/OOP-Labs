@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:BankingApp.UI.ViewModels.RoleBasedModels"
+             xmlns:banking="clr-namespace:BankingApp.Entities.Banking"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="BankingApp.UI.Views.DashboardPages.ClientPages.AccountOperationsModal"
+             x:DataType="viewmodel:ClientAccountsViewModel">
+    <Border Stroke="Black" Padding="10" StrokeShape="RoundRectangle 10" WidthRequest="300">
+        <VerticalStackLayout Spacing="10">
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="Операции со счетом"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Start" />
+                <Button Grid.Column="1"
+                        Text="✕" FontSize="14"
+                        BackgroundColor="Transparent"
+                        TextColor="Black"
+                        Clicked="OnCloseClicked" WidthRequest="40" HeightRequest="40" />
+            </Grid>
+            <Label Text="{Binding SelectedAccount.Type,
+                 Converter={StaticResource AccountTypeConverter}}" FontAttributes="Bold"
+                   FontSize="14" />
+            <Label Text="{Binding SelectedAccount.AccountNumber, StringFormat='Счет №{0}'}" />
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Баланс: " FontSize="14" />
+                        <Span Text="{Binding SelectedAccount.Balance,
+                            StringFormat='{0:C}'}" FontSize="16" FontAttributes="Bold" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <toolkit:Expander>
+                <toolkit:Expander.Header>
+                    <Border Stroke="Black" StrokeShape="RoundRectangle 10"
+                            Padding="10">
+                        <Label Text="Пополнение"
+                               VerticalOptions="Center"
+                               FontSize="16" />
+                    </Border>
+                </toolkit:Expander.Header>
+                <toolkit:Expander.Content>
+                    <Border Stroke="Black" StrokeShape="RoundRectangle 10"
+                            Padding="10" Margin="0,10,0,0">
+                        <VerticalStackLayout Spacing="10" Padding="10">
+                            <Label Text="Сумма пополнения: " />
+                            <Entry Placeholder="Введите сумму"
+                                   Text="{Binding DepositAmount,Converter={StaticResource StringToDecimalConverter}}" />
+                            <Button Text="Пополнить счет" Command="{Binding DepositCommand}"
+                                    BackgroundColor="Blue" />
+                        </VerticalStackLayout>
+                    </Border>
+                </toolkit:Expander.Content>
+            </toolkit:Expander>
+
+            <toolkit:Expander>
+                <toolkit:Expander.Header>
+                    <Border Stroke="Black" StrokeShape="RoundRectangle 10"
+                            Padding="10">
+                        <Label Text="Снятие"  
+                            VerticalOptions="Center"
+                                FontSize="16"/>
+                    </Border>
+                </toolkit:Expander.Header>
+                <toolkit:Expander.Content>
+                    <Border Stroke="Black" StrokeShape="RoundRectangle 10"
+                            Padding="10" Margin="0,10,0,0">
+                        <VerticalStackLayout Spacing="10" Padding="10">
+                            <Label Text="Сумма снятия:"/>
+                            <Entry Placeholder="Введите сумму"
+                                   Text="{Binding WithdrawAmount,Converter={StaticResource StringToDecimalConverter}}" />
+                            <Button Text="Снять средства" Command="{Binding WithdrawCommand}"
+                                    BackgroundColor="Blue" />
+                        </VerticalStackLayout>
+                    </Border>
+                </toolkit:Expander.Content>
+            </toolkit:Expander>
+            
+            <toolkit:Expander>
+                <toolkit:Expander.Header>
+                    <Border Stroke="Black" StrokeShape="RoundRectangle 10"
+                            Padding="10">
+                        <Label Text="Перевод средств"  
+                               VerticalOptions="Center"
+                               FontSize="16"/>
+                    </Border>
+                </toolkit:Expander.Header>
+                <toolkit:Expander.Content>
+                    <Border Stroke="Black" StrokeShape="RoundRectangle 10"
+                            Padding="10" Margin="0,10,0,0">
+                        <VerticalStackLayout Spacing="10" Padding="10">
+                           
+                        </VerticalStackLayout>
+                    </Border>
+                </toolkit:Expander.Content>
+            </toolkit:Expander>
+
+            <Button Text="Закрыть счет " BorderColor="Black" BorderWidth="1"
+                    Command="{Binding CloseAccountCommand}"
+                    VerticalOptions="Center" BackgroundColor="Blue"
+                    FontSize="16" />
+
+        </VerticalStackLayout>
+    </Border>
+</ContentPage>

@@ -1,0 +1,26 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:BankingApp.UI.Converters"
+             x:Class="BankingApp.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <converters:IsNullConverter x:Key="IsNullConverter"></converters:IsNullConverter>
+            <converters:NotNullConverter x:Key="NotNullConverter"></converters:NotNullConverter>
+            <converters:BoolToColorConverter x:Key="BoolToColorConverter"></converters:BoolToColorConverter>
+            <converters:RegistrationStatusToColorConverter x:Key="RegistrationStatusToColorConverter"></converters:RegistrationStatusToColorConverter>
+            <converters:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"></converters:StatusToVisibilityConverter>
+            <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"></converters:StringToVisibilityConverter>
+            <converters:CustomerTypeToVisibilityConverter x:Key="CustomerTypeToVisibilityConverter"></converters:CustomerTypeToVisibilityConverter>
+            <converters:AccountStatusConverter x:Key="AccountStatusConverter"></converters:AccountStatusConverter>
+            <converters:AccountTypeConverter x:Key="AccountTypeConverter"></converters:AccountTypeConverter>
+            <converters:AccountStatusToColorConverter x:Key="AccountStatusToColorConverter"></converters:AccountStatusToColorConverter>
+            <converters:StringToDecimalConverter x:Key="StringToDecimalConverter"></converters:StringToDecimalConverter >
+            </ResourceDictionary>
+    </Application.Resources>
+</Application>

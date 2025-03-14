@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:BankingApp.UI.ViewModels.RoleBasedModels"
+             xmlns:views="clr-namespace:BankingApp.UI.Views.DashboardPages.ClientPages"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="BankingApp.UI.Views.DashboardPages.ClientPages.ClientProfilePage"
+             x:DataType="viewmodel:ClientProfileViewModel"
+             >
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="False" IsVisible="False" />
+    </Shell.BackButtonBehavior>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <views:SharedHeader></views:SharedHeader>  
+                <StackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Имя: " FontAttributes="Bold"></Label>
+                        <Label Text="{Binding  CurrentUser.Username}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Пароль: " FontAttributes="Bold"></Label>
+                        <Label Text="{Binding CurrentUser.Password}" />
+                    </HorizontalStackLayout>
+                </StackLayout>
+                <StackLayout IsVisible="{Binding IsPhysicalPerson}" Spacing="10">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Тип клиента:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding CustomerType}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="ФИО:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding FullName}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Номер паспорта:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding PassportSeries}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Серия паспорта:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding PassportNumber}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Номер телефона:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding PhoneNumber}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Почта:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding Email}" />
+                    </HorizontalStackLayout>
+                </StackLayout>
+                <StackLayout IsVisible="{Binding IsEnterprise}" Spacing="10">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Тип клиента:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding CustomerType}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Название предприятия:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding LegalName}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Адрес предприятия:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding LegalAddress}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="УНП предприятия:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding TaxIdNumber}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Тип юр. лица:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding LegalEntityType}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Отрасль предприятия:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding IndustryType}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Почта:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding Email}" />
+                    </HorizontalStackLayout>
+                </StackLayout>
+                <StackLayout IsVisible="{Binding IsBank}" Spacing="10">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Тип клиента:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding CustomerType}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Название банка:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding LegalName}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Адрес банка:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding LegalAddress}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="УНП банка:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding TaxIdNumber}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Тип юр. лица:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding LegalEntityType}" />
+                    </HorizontalStackLayout>
+
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="БИК банка:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding BankIdCode}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Почта:" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding Email}" />
+                    </HorizontalStackLayout>
+                </StackLayout>
+                <StackLayout Padding="10">
+                    <Button Text="Выйти" BorderColor="Black" BorderWidth="1" BackgroundColor="Blue"
+                            FontSize="18"
+                            Command="{Binding LogoutCommand}"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill"/>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+</ContentPage>

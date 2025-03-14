@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:BankingApp.UI.ViewModels"
+             xmlns:entities="clr-namespace:BankingApp.Entities.Users"
+             xmlns:converter="clr-namespace:BankingApp.UI.Converters"
+             x:Class="BankingApp.UI.Views.ServicePages.LoginPage"
+             x:DataType="viewmodel:LoginViewModel">
+             
+    <Grid RowDefinitions="auto,auto,auto,auto,auto" Padding="10" RowSpacing="10">
+
+        <Label Grid.Row="0"
+               Text="Вход в систему"
+               FontSize="24"
+               HorizontalOptions="Center"
+               Margin="0,0,0,20" />
+
+        <Entry Grid.Row="1"
+               Placeholder="Имя пользователя"
+               Text="{Binding Username}"
+               Margin="0,10,0,0" />
+        
+        <Entry Grid.Row="2"
+               Placeholder="Пароль"
+               IsPassword="True"
+               Text="{Binding Password}"
+               Margin="0,10,0,0" />       
+        <Button Grid.Row="3"
+                Text="Войти"
+                TextColor="White"
+                BorderColor="Black" BorderWidth="1" 
+                BackgroundColor="{Binding CanExecuteLoginCommand,
+                Converter={StaticResource BoolToColorConverter}}" FontAttributes="Bold"
+                Command="{Binding  LoginCommand}"
+                x:Name="LoginButton"
+                Margin="0,20,0,0" />
+        
+        <Label Grid.Row="4"
+               Text="{Binding SuccessMessage}"
+               TextColor="Green"
+               IsVisible="{Binding SuccessMessage, Converter={StaticResource StringToVisibilityConverter}}"
+               HorizontalOptions="Center" />
+
+        
+        <Label Grid.Row="4"
+               Text="{Binding ErrorMessage}"
+               TextColor="Red"
+               IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"
+               HorizontalOptions="Center" />
+    </Grid>
+</ContentPage>

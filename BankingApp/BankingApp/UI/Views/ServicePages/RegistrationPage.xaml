@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dtos="clr-namespace:BankingApp.DTOs"
+             xmlns:viewmodel="clr-namespace:BankingApp.UI.ViewModels"
+             x:Class="BankingApp.UI.Views.ServicePages.RegistrationPage"
+             x:DataType="viewmodel:RegistrationViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="10,0,10,10">
+            <Border Stroke="LightGray" Padding="15" StrokeShape="RoundRectangle 10">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Форма регистрации" FontSize="22" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,20" />
+
+                    <Label Text="Основная информация" FontSize="18" FontAttributes="Bold" />
+
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                               <Span Text="Имя пользователя"></Span>
+                                <Span Text=" *" TextColor="Red"></Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Entry Text="{Binding Username }"
+                           Placeholder="Введите имя пользователя" />
+
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Пароль"></Span>
+                                <Span Text=" *" TextColor="Red"></Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>                    
+                    <Entry Text="{Binding Password}"
+                           Placeholder="Введите пароль" />
+
+                    <Label Text="Email" />
+                    <Entry Text="{Binding Email}"
+                           Placeholder="example@email.com" />
+
+                    <Label Text="Тип пользователя" />
+                    <Picker ItemsSource="{Binding CustomerTypes}"
+                            SelectedItem="{Binding SelectedCustomerType}" />
+
+                    <VerticalStackLayout
+                        Spacing="15"
+                        IsVisible="{Binding SelectedCustomerType,
+                        Converter= {StaticResource CustomerTypeToVisibilityConverter },
+                        ConverterParameter={x:Static dtos:CustomerType.PhysicalPerson}}">
+                        <Label Text="Информация о физическом лице" FontSize="18" FontAttributes="Bold" />
+
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Пароль"></Span>
+                                    <Span Text=" *" TextColor="Red"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>  
+                        <Label Text="ФИО" />
+                        <Entry Text="{Binding FullName}" Placeholder="Фамилия Имя Отчество" />
+
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Номер паспорта"></Span>
+                                    <Span Text=" *" TextColor="Red"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>  
+                        <Entry Text="{Binding PassportNumber}" Placeholder="Введите номер паспорта" />
+
+                        <Label Text="Серия паспорта" />
+                        <Entry Text="{Binding PassportSeries}" Placeholder="Введите серию паспорта (КВ)" />
+
+                        <Label Text="Номер телефона" />
+                        <Entry Text="{Binding PhoneNumber}" Keyboard="Telephone" Placeholder="Введите номер телефона)" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout
+                        Spacing="15"
+                        IsVisible="{Binding SelectedCustomerType,
+                        Converter= {StaticResource CustomerTypeToVisibilityConverter },
+                        ConverterParameter={x:Static dtos:CustomerType.Bank}}">
+                        <Label Text=" Информация о банке" FontSize="18" FontAttributes="Bold" />
+
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Юридическое название"></Span>
+                                    <Span Text=" *" TextColor="Red"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>  
+                        <Entry Text="{Binding LegalName}" Placeholder="Введите юр. название " />
+
+                        <Label Text="Юридический адрес" />
+                        <Entry Text="{Binding LegalAddress}" Placeholder="Введите юр. адрес" />
+
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="УНП"></Span>
+                                    <Span Text=" *" TextColor="Red"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>  
+                        <Entry Text="{Binding TaxIdNumber}" Placeholder="Введите УНП" />
+
+                        <Label Text="Тип юридического лица (ИП, ООО, и т.д.)" />
+                        <Entry Text="{Binding LegalEntityType}" Placeholder="Введите тип юр. лица" />
+
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="БИК"></Span>
+                                    <Span Text=" *" TextColor="Red"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>  
+                        <Entry Text="{Binding BankIdCode}" Placeholder="Введите БИК" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout
+                        Spacing="15"
+                        IsVisible="{Binding SelectedCustomerType,
+                        Converter= {StaticResource CustomerTypeToVisibilityConverter },
+                        ConverterParameter={x:Static dtos:CustomerType.Enterprise}}">
+                        <Label Text=" Информация о предприятии" FontSize="18" FontAttributes="Bold" />
+
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Юридическое название"></Span>
+                                    <Span Text=" *" TextColor="Red"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>  
+                        <Entry Text="{Binding LegalName}" Placeholder="Введите юр. название предприятия" />
+
+                        <Label Text="Юридический адрес" />
+                        <Entry Text="{Binding LegalAddress}" Placeholder="Введите юр. адрес предприятия" />
+
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="УНП"></Span>
+                                    <Span Text=" *" TextColor="Red"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>  
+                        <Entry Text="{Binding TaxIdNumber}" Placeholder="Введите УНП предприятия" />
+
+                        <Label Text="Тип юридического лица (ИП, ООО, и т.д.)" />
+                        <Entry Text="{Binding LegalEntityType}" Placeholder="Введите тип юр. лица предприятия" />
+
+                        <Label Text="Отрасль предприятия" />
+                        <Entry Text="{Binding IndustryType}" Placeholder="Введите отрасль предприятия" />
+                    </VerticalStackLayout>
+
+                    <Button Text="Зарегистрироваться"
+                            Command="{Binding RegisterCommand}"
+                            BackgroundColor="{Binding CanExecuteRegister, 
+                            Converter={StaticResource BoolToColorConverter} }"
+                            TextColor="White"
+                            CornerRadius="5"
+                            Margin="0,10,0,0"
+                            HeightRequest="50" />
+
+                    <Label Text="{Binding StatusMessage }"
+                           IsVisible="{Binding  StatusMessage,
+                           Converter={StaticResource StringToVisibilityConverter}}"
+                           TextColor="Green"
+                           HorizontalOptions="Center"
+                           Margin="0,10,0,0" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
