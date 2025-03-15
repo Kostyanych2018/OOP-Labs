@@ -81,6 +81,9 @@
       <MauiXaml Update="UI\Views\DashboardPages\ClientPages\ClientProfilePage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
+      <MauiXaml Update="UI\Views\SystemPages\UserPages\BankUsersPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
     </ItemGroup>
 
     <ItemGroup>
@@ -104,10 +107,10 @@
         <DependentUpon>ClientPage.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Services\TransactionService\" />
+      <Compile Update="UI\Views\SystemPages\UserPages\BankUsersPage.xaml.cs">
+        <DependentUpon>UsersPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
 </Project>

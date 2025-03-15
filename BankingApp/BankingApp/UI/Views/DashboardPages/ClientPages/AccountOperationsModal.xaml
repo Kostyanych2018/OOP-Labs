@@ -74,7 +74,7 @@
                             <Entry Placeholder="Введите сумму"
                                    Text="{Binding WithdrawAmount,Converter={StaticResource StringToDecimalConverter}}" />
                             <Button Text="Снять средства" Command="{Binding WithdrawCommand}"
-                                    BackgroundColor="Blue" />
+                                    BackgroundColor="Blue" BorderColor="Black" BorderWidth="1" />
                         </VerticalStackLayout>
                     </Border>
                 </toolkit:Expander.Content>
@@ -93,7 +93,18 @@
                     <Border Stroke="Black" StrokeShape="RoundRectangle 10"
                             Padding="10" Margin="0,10,0,0">
                         <VerticalStackLayout Spacing="10" Padding="10">
-                           
+                           <Label Text="Номер счета получателя: "/>
+                           <Entry Placeholder="Введите номер счета"
+                                  Text="{Binding RecipientAccountNumber}"/>
+                           <Label Text="Сумма перевода:"/>
+                           <Entry Placeholder="Введите сумму"
+                                  Text="{Binding TransferAmount,
+                                  Converter={StaticResource StringToDecimalConverter}}"/>
+                           <Label Text="Комиссия: " IsVisible="{Binding IsCrossBankTransfer}"/>
+                           <Label Text="{Binding TransferFee, StringFormat='{0:C}'}" 
+                                  IsVisible="{Binding IsCrossBankTransfer}"/>
+                           <Button Text="Выполнить перевод" Command="{Binding TransferCommand}"
+                                   BackgroundColor="Blue" BorderColor="Black" BorderWidth="1"/>
                         </VerticalStackLayout>
                     </Border>
                 </toolkit:Expander.Content>

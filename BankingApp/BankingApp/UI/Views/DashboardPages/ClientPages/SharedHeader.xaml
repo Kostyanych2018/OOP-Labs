@@ -3,7 +3,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BankingApp.UI.Views.DashboardPages.ClientPages.SharedHeader">
-    <Label Text="Личный кабинет клиента"
+    <Label Text="Личный кабинет пользователя"
            FontSize="24"
            FontAttributes="Bold"
            HorizontalOptions="Center"

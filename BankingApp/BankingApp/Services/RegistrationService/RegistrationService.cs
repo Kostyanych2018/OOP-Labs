@@ -13,48 +13,21 @@ public class RegistrationService : IRegistrationService
 
     public RegistrationService()
     {
-        Customer bank1 = new Bank()
-        {
-            LegalName = "Сбербанк",
-            LegalAddress = "ул. Ленина, д. 1",
-            TaxIdNumber = "111222333",
-            LegalEntityType = "ООО",
-            BankIdCode = "SB001",
-            Email = "contact@sberbank.ru",
-        };
-        Customer bank2 = new Bank()
-        {
-            LegalName = "ВТБ",
-            LegalAddress = "пр. Мира, д. 5",
-            TaxIdNumber = "444555666",
-            LegalEntityType = "ОАО",
-            BankIdCode = "VTB002",
-            Email = "contact@vtb.ru",
-        };
-        _users = new ObservableCollection<User>()
-        {
-            new User()
-            {
-                UserId = Guid.NewGuid(),
-                Username = "sberbank",
-                Password = "123",
-                Customer = bank1,
-                CustomerType = CustomerType.Bank
-            },
-            new User()
-            {
-            UserId = Guid.NewGuid(),
-            Username = "vtb",
-            Password = "345",
-            Customer = bank2,
-            CustomerType = CustomerType.Bank
-            
-            }
-        };
-        InitializeTestData();
+
+        var banks = DataGenerationService.GenerateBanks(3);
+        var enterprises = DataGenerationService.GenerateEnterprises(3);
+        var persons = DataGenerationService.GeneratePhysicalPersons(5);
+        var generatedUsers = DataGenerationService.GenerateUsers(banks, enterprises, persons);
+        _users = new ObservableCollection<User>(generatedUsers);
+        // InitializeTestData();
     }
 
-    public Customer? GetUserById(Guid userId)
+    public User? GetUserById(Guid userId)
+    {
+        return _users.FirstOrDefault(u=>u.UserId==userId);
+    }
+
+    public Customer? GetCustomerById(Guid userId)
     {
         return _users.FirstOrDefault(u=>u.UserId==userId)?.Customer;
     }
@@ -129,48 +102,16 @@ public class RegistrationService : IRegistrationService
         request.Status = RegistrationStatus.Rejected;
     }
 
-    public void InitializeTestData()
-    {
-        var testRequests = new List<RegistrationRequest>()
-        {
-            new RegistrationRequest()
-            {
-                Username = "bank_user",
-                Password = "123",
-                Email = "bank@example.com",
-                CustomerType = CustomerType.Bank,
-                LegalName = "Test Bank",
-                LegalAddress = "123 Main Street",
-                TaxIdNumber = "123456789",
-                LegalEntityType = "Bank",
-                BankIdCode = "BANK123",
-                Status = RegistrationStatus.Pending
-            },
-            new RegistrationRequest()
-            {
-                Username = "enterprise_user",
-                Password = "enterprise_password",
-                CustomerType = CustomerType.Enterprise,
-                LegalName = "Test enterprise",
-                LegalAddress = "123 Enterprise Street",
-                TaxIdNumber = "143948389",
-                LegalEntityType = "enterprise",
-                Status = RegistrationStatus.Pending
-            },
-            new RegistrationRequest()
-            {
-                Username = "John_Doe",
-                Password = "123",
-                PassportSeries = "AB",
-                PassportNumber = "1232339",
-                PhoneNumber = "+123-456-789",
-                CustomerType = CustomerType.PhysicalPerson,
-                Status = RegistrationStatus.Pending
-            }
-        };
-        foreach (var request in testRequests)
-        {
-            _registrationRequests.Add(request);
-        }
-    }
+    // public void InitializeTestData()
+    // {
+    //     var testRequests = new List<RegistrationRequest>()
+    //     {
+    //       
+    //         }
+    //     };
+    //     foreach (var request in testRequests)
+    //     {
+    //         _registrationRequests.Add(request);
+    //     }
+    // }
 }

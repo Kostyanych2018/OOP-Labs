@@ -8,6 +8,7 @@
     xmlns:views="clr-namespace:BankingApp.UI.Views"
     xmlns:clientpages="clr-namespace:BankingApp.UI.Views.DashboardPages.ClientPages"
     xmlns:servicePages="clr-namespace:BankingApp.UI.Views.ServicePages"
+    xmlns:userPages1="clr-namespace:BankingApp.UI.Views.SystemAdminPages.UserPages"
     Shell.FlyoutBehavior="Flyout"
     Title="BankingApp">
 
@@ -26,14 +27,16 @@
             ContentTemplate="{DataTemplate lab1:MainPage}"
             Route="MainPage" />
     </FlyoutItem>
-    <FlyoutItem Title="Registration" x:Name="RegistrationPage">
+    <FlyoutItem Title="Регистрация" x:Name="RegistrationPage">
         <ShellContent
             ContentTemplate="{DataTemplate servicePages:RegistrationPage}"
             Route="RegistrationPage" />
     </FlyoutItem>
-    <FlyoutItem Title="Admin">
+    <FlyoutItem Title="Главная страница">
         <Tab Title="Пользователи системы">
-            <ShellContent ContentTemplate="{DataTemplate views:UsersPage}"></ShellContent>
+            <ShellContent Title="Физ. лица" ContentTemplate="{DataTemplate userPages1:PhysicalPersonsUsersPage}"/>
+            <ShellContent Title="Банки" ContentTemplate="{DataTemplate userPages1:BankUsersPage}"/>
+            <ShellContent Title="Предприятия" ContentTemplate="{DataTemplate userPages1:EnterpriseUsersPage}"/>
         </Tab>
         <Tab Title="Заявки на регистрацию">
             <ShellContent ContentTemplate="{DataTemplate views:RequestsPage}"></ShellContent>

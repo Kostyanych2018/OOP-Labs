@@ -27,6 +27,10 @@ public class ClientAccountsViewModel : INotifyPropertyChanged
     private User? _currentUser;
     private Bank? _selectedBank;
 
+    private bool _isCrossBankTransfer;
+    private decimal _transferFee;
+    private const decimal CrossBankTransferFee = 0.01m;
+
     private string _errorMessage = "";
     private string _recipientAccountNumber = "";
     private decimal _transferAmount;
@@ -205,7 +209,7 @@ public class ClientAccountsViewModel : INotifyPropertyChanged
 
     public async Task Transfer()
     {
-        if(SelectedAccount==null) return;
+        if (SelectedAccount == null) return;
         try
         {
             if (TransferAmount <= 0)
@@ -213,16 +217,25 @@ public class ClientAccountsViewModel : INotifyPropertyChanged
                 await Shell.Current.DisplayAlert("Ошибка", "Сумма должна быть больше нуля", "OK");
                 return;
             }
-            if (TransferAmount > SelectedAccount.Balance)
+
+            decimal totalAmount = TransferAmount;
+            if (IsCrossBankTransfer)
+            {
+                totalAmount += TransferFee;
+            }
+
+            if (totalAmount > SelectedAccount.Balance)
             {
                 await Shell.Current.DisplayAlert("Ошибка", "Недостаточно средств на счете", "OK");
                 return;
             }
+
             if (string.IsNullOrWhiteSpace(RecipientAccountNumber))
             {
                 await Shell.Current.DisplayAlert("Ошибка", "Введите номер счета получателя", "OK");
                 return;
             }
+
             var accounts = await _accountService.GetAccounts(Guid.Empty);
             var destinationAccount = accounts.FirstOrDefault(a => a.AccountNumber == RecipientAccountNumber);
             if (destinationAccount == null)
@@ -230,10 +243,24 @@ public class ClientAccountsViewModel : INotifyPropertyChanged
                 await Shell.Current.DisplayAlert("Ошибка", "Счет получателя не найден", "OK");
                 return;
             }
-            var transaction = await _accountService.Transfer(SelectedAccount.AccountId, destinationAccount.AccountId, TransferAmount);
-            await Shell.Current.DisplayAlert("Успех", 
-                $"Переведено {TransferAmount:C} со счета {SelectedAccount.AccountNumber} на счет {RecipientAccountNumber}", 
-                "OK");
+            
+            if (destinationAccount.Status != AccountStatus.Active)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", 
+                    "Перевод невозможен. Счет получателя не активен", "OK");
+                return;
+            }
+
+            var transaction = await _accountService.Transfer(SelectedAccount.AccountId, destinationAccount.AccountId, 
+                TransferAmount,IsCrossBankTransfer ? TransferFee : 0);
+            string message = $"Переведено {TransferAmount:C} со счета {SelectedAccount.AccountNumber} " +
+                             $"на счет {RecipientAccountNumber}";
+                
+            if (IsCrossBankTransfer)
+            {
+                message += $"\nКомиссия за межбанковский перевод: {TransferFee:C}";
+            }
+            await Shell.Current.DisplayAlert("Успех", message, "OK");
             await LoadAccounts();
             TransferAmount = 0;
             RecipientAccountNumber = "";
@@ -242,6 +269,60 @@ public class ClientAccountsViewModel : INotifyPropertyChanged
         {
             await Shell.Current.DisplayAlert("Ошибка", $"Не удалось выполнить перевод: {ex.Message}", "OK");
         }
+    }
+
+    private async void CheckCrossBankTransfer()
+    {
+        if (string.IsNullOrWhiteSpace(RecipientAccountNumber) || SelectedAccount == null)
+        {
+            IsCrossBankTransfer = false;
+            return;
+        }
+
+        try
+        {
+            var accounts = await _accountService.GetAccounts(Guid.Empty);
+            var destinationAccount = accounts.FirstOrDefault(a => a.AccountNumber == RecipientAccountNumber);
+            if (destinationAccount == null)
+            {
+                IsCrossBankTransfer = false;
+                return;
+            }
+            IsCrossBankTransfer = destinationAccount.BankIdCode!= SelectedAccount.BankIdCode;
+            CalculateTransferFee();
+        }
+        catch
+        {
+            IsCrossBankTransfer = false;
+        }
+    }
+
+    private void CalculateTransferFee()
+    {
+        TransferFee = IsCrossBankTransfer && TransferAmount > 0 ? Math.Round(TransferAmount * CrossBankTransferFee, 2) : 0;
+    }
+
+    public bool IsCrossBankTransfer
+    {
+        get => _isCrossBankTransfer;
+        set => SetProperty(ref _isCrossBankTransfer, value);
+    }
+    
+    public decimal TransferAmount
+    {
+        get => _transferAmount;
+        set
+        {
+            _transferAmount = value;
+            OnPropertyChanged();
+            CalculateTransferFee();
+        }
+    }
+
+    public decimal TransferFee
+    {
+        get => _transferFee;
+        set => SetProperty(ref _transferFee, value);
     }
 
 
@@ -268,10 +349,16 @@ public class ClientAccountsViewModel : INotifyPropertyChanged
         get => _availableBanks;
         set => SetProperty(ref _availableBanks, value);
     }
+
     public string RecipientAccountNumber
     {
         get => _recipientAccountNumber;
-        set => SetProperty(ref _recipientAccountNumber, value);
+        set
+        {
+            _recipientAccountNumber = value;
+            OnPropertyChanged();
+            CheckCrossBankTransfer();
+        }
     }
 
     public Account? SelectedAccount
@@ -279,7 +366,7 @@ public class ClientAccountsViewModel : INotifyPropertyChanged
         get => _selectedAccount;
         set
         {
-            SetProperty(ref _selectedAccount, value); 
+            SetProperty(ref _selectedAccount, value);
             ((Command)CloseAccountCommand).ChangeCanExecute();
             ((Command)DepositCommand).ChangeCanExecute();
             ((Command)WithdrawCommand).ChangeCanExecute();
@@ -303,12 +390,6 @@ public class ClientAccountsViewModel : INotifyPropertyChanged
     {
         get => _withdrawAmount;
         set => SetProperty(ref _withdrawAmount, value);
-    }
-
-    public decimal TransferAmount
-    {
-        get => _transferAmount;
-        set => SetProperty(ref _transferAmount, value);
     }
 
     public AccountType SelectedAccountType

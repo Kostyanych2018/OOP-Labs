@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:entities="clr-namespace:BankingApp.Entities.Users"
+             xmlns:roleBasedModels="clr-namespace:BankingApp.UI.ViewModels.RoleBasedModels"
+             x:DataType="roleBasedModels:SystemAdminViewModel"
+             x:Class="BankingApp.UI.Views.SystemAdminPages.UserPages.EnterpriseUsersPage">
+    <ContentPage.Content>
+        <ScrollView>
+            <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                         Command="{Binding RefreshCommand}">
+                <VerticalStackLayout>
+                    <Label Text="Предприятия системы"
+                           HorizontalOptions="Center" FontAttributes="Bold" FontSize="22"
+                           Margin="0,10,0,10" />
+                    <CollectionView ItemsSource="{Binding Enterprises}"
+                                    SelectedItem="{Binding SelectedUser}"
+                                    SelectionMode="Single">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="entities:User">
+                                <toolkit:Expander>
+                                    <toolkit:Expander.Header>
+                                        <Border Stroke="Black"
+                                                StrokeShape="RoundRectangle 10"
+                                                Padding="10" Margin="5">
+                                            <HorizontalStackLayout Padding="5" Spacing="10">
+                                                <Label Text="Название предприятия: " FontAttributes="Bold" FontSize="14" />
+                                                <Label Text="{Binding Customer.Name}" FontSize="14" />
+                                            </HorizontalStackLayout>
+                                        </Border>
+                                    </toolkit:Expander.Header>
+                                    <toolkit:Expander.Content>
+                                        <Border Stroke="Black"
+                                                StrokeShape="RoundRectangle 10"
+                                                Padding="10" Margin="5">
+                                            <VerticalStackLayout Margin="5,0,0,0" Spacing="5">
+
+                                                <HorizontalStackLayout Spacing="10">
+                                                    <Label Text="Логин: " FontAttributes="Bold" FontSize="14" />
+                                                    <Label Text="{Binding Username}" FontSize="14" />
+                                                </HorizontalStackLayout>
+
+                                                <HorizontalStackLayout Spacing="10">
+                                                    <Label Text="Пароль: " FontAttributes="Bold" FontSize="14" />
+                                                    <Label Text="{Binding Password}" FontSize="14" />
+                                                </HorizontalStackLayout>
+
+                                                <HorizontalStackLayout Spacing="10">
+                                                    <Label Text="Тип пользователя: " FontAttributes="Bold" FontSize="14" />
+                                                    <Label Text="{Binding CustomerType}" FontSize="14" />
+                                                </HorizontalStackLayout>
+
+                                                <HorizontalStackLayout Spacing="10">
+                                                    <Label Text="Роль: " FontAttributes="Bold" FontSize="14" />
+                                                    <Label Text="{Binding Role}" FontSize="14" />
+                                                </HorizontalStackLayout>
+
+                                                <HorizontalStackLayout Spacing="10">
+                                                    <Label Text="ID: " FontAttributes="Bold" FontSize="14" />
+                                                    <Label Text="{Binding UserId}" FontSize="14" />
+                                                </HorizontalStackLayout>
+
+                                                <!-- <HorizontalStackLayout Spacing="10"> -->
+                                                <!--     <Label Text="Назначить роль" -->
+                                                <!--            VerticalOptions="Center" -->
+                                                <!--            FontAttributes="Bold" /> -->
+                                                <!-- -->
+                                                <!--     <Picker -->
+                                                <!--         ItemsSource="{Binding -->
+                                                <!--             Source={RelativeSource AncestorType= -->
+                                                <!--                     {x:Type roleBasedModels:SystemAdminViewModel}}, -->
+                                                <!--                     Path=AvailableRoles}" -->
+                                                <!--         SelectedItem="{Binding -->
+                                                <!--             Source={RelativeSource AncestorType= -->
+                                                <!--                     {x:Type roleBasedModels:SystemAdminViewModel}}, -->
+                                                <!--                     Path=SelectedUserRole, Mode=TwoWay}" -->
+                                                <!--         HorizontalOptions="Fill" -->
+                                                <!--         Height="20" /> -->
+                                                <!--     <Button Text="Применить" -->
+                                                <!--             HorizontalOptions="Fill" -->
+                                                <!--             Height="20" -->
+                                                <!--             Command="{Binding -->
+                                                <!--             Source={RelativeSource AncestorType= -->
+                                                <!--                     {x:Type roleBasedModels:SystemAdminViewModel}}, -->
+                                                <!--                     Path=AssignRoleCommand}" -->
+                                                <!--             CommandParameter="{Binding .}" /> -->
+                                                <!-- </HorizontalStackLayout> -->
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </toolkit:Expander.Content>
+                                </toolkit:Expander>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </RefreshView>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

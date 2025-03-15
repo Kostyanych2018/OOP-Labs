@@ -8,7 +8,8 @@ namespace BankingApp.Services.RegistrationService;
 public interface IRegistrationService
 {
     public ObservableCollection<User> GetUsers();
-    public Customer? GetUserById(Guid userId);
+    public User? GetUserById(Guid userId);
+    public Customer? GetCustomerById(Guid userId);
     ObservableCollection<RegistrationRequest> GetRegistrationRequests();
     void SubmitRegistration(RegistrationRequest registrationRequest); 
     void ApproveRegistration(RegistrationRequest registrationRequest);

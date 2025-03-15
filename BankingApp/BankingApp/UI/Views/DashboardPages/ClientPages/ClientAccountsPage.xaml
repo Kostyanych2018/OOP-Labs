@@ -8,6 +8,7 @@
              xmlns:banking="clr-namespace:BankingApp.Entities.Banking"
              xmlns:customers="clr-namespace:BankingApp.Entities.Customers"
              x:DataType="viewmodel:ClientAccountsViewModel">
+    <ScrollView>
     <VerticalStackLayout Spacing="10" Padding="10">
         <views:SharedHeader></views:SharedHeader>
         <Border Stroke="Black"
@@ -58,7 +59,7 @@
                 Padding="10">
             <VerticalStackLayout Spacing="10">
                 <Label Text="Мои счета" FontSize="16" FontAttributes="Bold"/>
-                <Button Text="Открыть счет" BorderColor="Black" BorderWidth="1"
+                <Button Text="Открыть счет" BorderColor="Black" BorderWidth="2"
                         Command="{Binding OpenAccountCommand}"
                         BackgroundColor="Blue"
                         CornerRadius="5"
@@ -92,7 +93,7 @@
                                                FontSize="14"/>
                                         
                                         <StackLayout Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
-                                            <Button Text="Операции" BackgroundColor="Blue"
+                                            <Button Text="Операции" BackgroundColor="Blue" BorderColor="Black" BorderWidth="2"
                                                     Clicked="OnAccountOperationsClicked"
                                                     HeightRequest="30" WidthRequest="100" Margin="5,0,5,0" Padding="5,0"
                                                     />
@@ -104,6 +105,6 @@
                     </CollectionView>
             </VerticalStackLayout>
         </Border>
-        
-    </VerticalStackLayout>
+    </VerticalStackLayout>    
+    </ScrollView>
 </ContentPage>

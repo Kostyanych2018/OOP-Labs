@@ -14,6 +14,6 @@ public interface IAccountService
 
     Task<Transaction> Deposit(Guid accountId, decimal amount);
     Task<Transaction> Withdraw(Guid accountId, decimal amount);
-    Task<Transaction> Transfer(Guid sourceAccountId, Guid destinationAccountId, decimal amount);
+    Task<Transaction> Transfer(Guid sourceAccountId, Guid destinationAccountId, decimal amount,decimal fee = 0);
     Task<List<Transaction>> GetTransactions(Guid accountId);
 }

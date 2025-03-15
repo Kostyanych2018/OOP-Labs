@@ -113,7 +113,7 @@ public class AccountService:IAccountService
         return Task.FromResult(transaction);
     }
     
-    public Task<Transaction> Transfer(Guid sourceAccountId, Guid destinationAccountId, decimal amount)
+    public Task<Transaction> Transfer(Guid sourceAccountId, Guid destinationAccountId, decimal amount,decimal fee=0)
     {
         var sourceAccount = _accounts.FirstOrDefault(a => a != null && a.AccountId == sourceAccountId);
         var destinationAccount = _accounts.FirstOrDefault(a => a != null && a.AccountId == destinationAccountId);
@@ -125,8 +125,10 @@ public class AccountService:IAccountService
                                                 $": счет не найден или неактивен ");
         if (amount <= 0)
             throw new ArgumentException("Сумма перевода должна быть положительной");
-        if (sourceAccount.Balance < amount)
+        decimal totalDebit = amount + fee;
+        if (sourceAccount.Balance < totalDebit)
             throw new InvalidOperationException("Недостаточно средств");
+        
         var transaction = new Transaction
         {
             TransactionId = Guid.NewGuid(),
@@ -136,8 +138,23 @@ public class AccountService:IAccountService
             Type = TransactionType.Transfer,
             Status = TransactionStatus.Completed,
             TimeStamp = DateTime.Now,
-            Description = "Перевод"
+            Description = $"Перевод средств со счета {sourceAccount.AccountNumber} на счет {destinationAccount.AccountNumber}"
         };
+        if (fee > 0)
+        {
+            var feeTransaction = new Transaction
+            {
+                TransactionId = Guid.NewGuid(),
+                SourceAccountId = sourceAccountId,
+                DestinationAccountId = null,
+                Amount = fee,
+                TimeStamp = DateTime.Now,
+                Type = TransactionType.Fee,
+                Status = TransactionStatus.Completed,
+                Description = $"Комиссия за межбанковский перевод"
+            };
+            _transactions.Add(feeTransaction);
+        }
         sourceAccount.Balance -= amount;
         destinationAccount.Balance += amount;
         _transactions.Add(transaction);

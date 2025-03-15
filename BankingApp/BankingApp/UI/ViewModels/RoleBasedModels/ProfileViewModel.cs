@@ -13,7 +13,7 @@ using BankingApp.Services.RegistrationService;
 
 namespace BankingApp.UI.ViewModels.RoleBasedModels;
 
-public class ClientProfileViewModel : INotifyPropertyChanged
+public class ProfileViewModel : INotifyPropertyChanged
 {
     private readonly INavigationService _navigationService;
     private readonly IRegistrationService _registrationService;
@@ -45,7 +45,7 @@ public class ClientProfileViewModel : INotifyPropertyChanged
 
     public ICommand LogoutCommand { get; }
 
-    public ClientProfileViewModel(
+    public ProfileViewModel(
         IRegistrationService registrationService,
         INavigationService navigationService,
         IAuthService authService)
@@ -78,7 +78,7 @@ public class ClientProfileViewModel : INotifyPropertyChanged
             IsLoading = true;
             if (CurrentUser != null)
             {
-                _customerInfo = _registrationService.GetUserById(CurrentUser.UserId);
+                _customerInfo = _registrationService.GetCustomerById(CurrentUser.UserId);
                 if (_customerInfo != null)
                 {
                     switch (CurrentUser.CustomerType)

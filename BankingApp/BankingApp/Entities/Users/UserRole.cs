@@ -2,9 +2,10 @@ namespace BankingApp.Entities.Users;
 
 public enum UserRole
 {
-    Client,
-    Operator,
+    BankAdmin,
+    EnterpriseAdmin,
     Manager,
-    ThirdPartySpecialist,
-    Administrator
+    Operator,
+    EnterpriseSpecialist,
+    Client
 }

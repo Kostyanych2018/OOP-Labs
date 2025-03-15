@@ -4,9 +4,9 @@ namespace BankingApp.UI.Views.DashboardPages.ClientPages;
 
 public partial class ClientProfilePage :  ContentPage
 {
-    public ClientProfilePage(ClientProfileViewModel clientProfile)
+    public ClientProfilePage(ProfileViewModel profile)
     {
         InitializeComponent();
-        BindingContext = clientProfile;
+        BindingContext = profile;
     }
 }

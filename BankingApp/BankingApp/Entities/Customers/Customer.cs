@@ -3,6 +3,7 @@ namespace BankingApp.Entities.Customers;
 public abstract class Customer
 {
      public string? Email { get; set; }
+     public abstract string? Name { get; set; }
 }
 // у каждого пользователя (предприятия и тд будет id, email)
 
